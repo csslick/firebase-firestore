@@ -53,12 +53,14 @@ db.collection(collection_name)
           <span class="title">${title}</span>
           <span class="date">${date}</span>
           <span class="id">${doc.id}</span>
+          <button id="btn_del">삭제</button>
         </li>
       `
     });
     html += `</ul>`
     $('#view').append(html);
   });
+
 
 // 추가(id 자동 생성)
 function add_db(data) {
@@ -75,6 +77,12 @@ function add_db(data) {
   });
 }
 
+// 삭제 버튼
+$('#view').on('click', '#btn_del' ,function(){
+  console.log('삭제')
+})
+
+// 추가 버튼
 $('#post').on('submit', function(e){
   e.preventDefault();
   var title = $('#title').val();
