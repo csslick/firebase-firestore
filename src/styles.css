@@ -1,23 +1,7 @@
 body {
   font-family: sans-serif;
 }
-
-.list-group-item {
-  display: flex;
-  text-align: center;
+#app {
 }
 
-.list-group-item > span {
-  flex: 1;
-}
-.list-group-item > .num {
-  flex-grow: 0;
-  flex-basis: 5em;
-}
-.list-group-item > .title,
-.list-group-item > .date,
-.list-group-item > .id {
-  flex-basis: 200px;
-  text-align: left;
-}
 
