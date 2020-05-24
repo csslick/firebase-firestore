@@ -13,26 +13,51 @@
 
   <body>
     <div id="app" class="container">
-      <div id="view">
+      <div id="post_list">
         <h1>post list</h1>
       </div>
+      <article id="post_view">
+        <h1>post title</h1>
+        <p>post description</p>
+        <footer>
+          <button class="btn_update">수정</button>
+          <button class="btn_delete">삭제</button>
+        </footer>
+      </article>
       
+
       <form id="post" class="mt-4">
         <caption>글쓰기</caption>
         <div>
-          <label for="title">
+          <label for="post_title">
             제목
-            <input type="text" id="title" required />
+            <input type="text" id="post_title" required />
           </label>
         </div>
         <div>
           <label for="desc">
-            <textarea name="" id="desc" cols="30" rows="5" required></textarea>
+            <textarea name="" id="post_desc" cols="30" rows="5" required></textarea>
           </label>
-          <button id="send">글쓰기</button>
+          <button class="btn_send">글쓰기</button>
         </div>
       </form>
       <p id="info_text">write status:</p>
+
+      <form id="update" class="mt-4">
+        <caption>글 수정하기</caption>
+        <div>
+          <label for="update_title">
+            제목
+            <input type="text" id="update_title" required />
+          </label>
+        </div>
+        <div>
+          <label for="update_desc">
+            <textarea name="" id="update_desc" cols="30" rows="5" required></textarea>
+          </label>
+          <button class="btn_send">수정완료</button>
+        </div>
+      </form>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>

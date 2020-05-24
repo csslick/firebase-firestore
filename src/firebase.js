@@ -55,18 +55,18 @@ db.collection(collection_name)
       html += `
         <tr>
           <td class="num">${docs_length--}</td>
-          <td class="title">${title}</td>
+          <td class="title"><a href='#'>${title}</a></td>
           <td class="date">${date.slice(0,12)}</td>
           <!-- <td class="id">${doc.id}</td> -->
           <td>
-            <button id="btn_del" data-id=${doc.id}>삭제</button>
-            <button id="btn_update" data-id=${doc.id}>수정</button>
+            <a href="#" id="btn_del" data-id=${doc.id}>삭제</a> | 
+            <a href="#update" id="btn_update" data-id=${doc.id}>수정</a>
           </td>
         </tr>
       `;
     });
     html += `</table>`;
-    $("#view").append(html);
+    $("#post_list").append(html);
   });
 
 // 추가(id 자동 생성)
@@ -87,17 +87,38 @@ function add_db(data) {
 }
 
 // 수정
-$("#view").on("click", "#btn_update", function (e) {
+$("#post_list").on("click", "#btn_update", function (e) {
   var _id = $(e.target).attr('data-id');  // document key or name(id)
   
+  // read document
   db.collection(collection_name)
     .doc(_id)
     .get()
     .then(function (myData) {
-      console.log(myData.data().title);
-      console.log(myData.data().desc);
-      $('#title').val(myData.data().title);
-      $('#desc').val(myData.data().desc); 
+      $('#update_title').val(myData.data().title);
+      $('#update_desc').val(myData.data().desc); 
+      $('#update_title .btn_send').attr('data-id', _id);
+
+      // 수정
+      $('#update').on('submit', function(){
+        // 글 수정하기 폼의 내용을 가져와 update
+        var title = $(this).find('#update_title').val();
+        var desc = $(this).find('#update_desc').val();
+        var obj = {
+          title: title,
+          desc: desc,
+          date: new Date().toLocaleString()
+        };
+
+        db.collection(collection_name)
+        .doc(_id)
+        .update(obj)
+        .then(function(){ 
+          console.log('업데이트 완료');
+          location.reload();
+        }) 
+        .catch(function(error){ console.log('업데이트 오류!')})       
+      })
     })
     .catch(function (error) {
       console.error("오류 ", error);
@@ -105,7 +126,10 @@ $("#view").on("click", "#btn_update", function (e) {
 });
 
 // 삭제
-$("#view").on("click", "#btn_del", function (e) {
+$("#post_list").on("click", "#btn_del", function (e) {
+  var ans = confirm('정말로 삭제하시겠습니까?');
+  if(!ans) return;
+  
   console.log("삭제", $(e.target).attr('data-id'));
   var _id = $(e.target).attr('data-id');  // document key or name(id)
 
@@ -124,8 +148,8 @@ $("#view").on("click", "#btn_del", function (e) {
 // 추가 버튼
 $("#post").on("submit", function (e) {
   e.preventDefault();
-  var title = $("#title").val();
-  var desc = $("#desc").val();
+  var title = $("#post_title").val();
+  var desc = $("#post_desc").val();
   var obj = {
     title: title,
     desc: desc,
@@ -133,4 +157,25 @@ $("#post").on("submit", function (e) {
   };
   add_db(obj);
   console.log(obj);
+});
+
+// 글보기
+$("#post_list").on("click", ".title a", function (e) {
+  e.preventDefault();
+  // read document id
+  var _id = $(e.target)
+              .parents('tr')
+              .find('#btn_update')
+              .attr('data-id');
+
+  db.collection(collection_name)
+    .doc(_id)
+    .get()
+    .then(function (myData) {
+      $('#post_view > h1').text(myData.data().title);
+      $('#post_view > p').text(myData.data().desc); 
+    })
+    .catch(function (error) {
+      console.error("오류 ", error);
+    });  
 });
