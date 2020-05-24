@@ -20,12 +20,11 @@
         <h1>post title</h1>
         <p>post description</p>
         <footer>
-          <button class="btn_update">수정</button>
-          <button class="btn_delete">삭제</button>
+          <a href="#update" class="btn_update">수정</a>
+          <a href="#" class="btn_delete">삭제</a>
         </footer>
       </article>
       
-
       <form id="post" class="mt-4">
         <caption>글쓰기</caption>
         <div>
@@ -39,9 +38,9 @@
             <textarea name="" id="post_desc" cols="30" rows="5" required></textarea>
           </label>
           <button class="btn_send">글쓰기</button>
+          <p id="info_text">write status:</p>
         </div>
       </form>
-      <p id="info_text">write status:</p>
 
       <form id="update" class="mt-4">
         <caption>글 수정하기</caption>
